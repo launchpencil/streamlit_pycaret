@@ -49,8 +49,15 @@ if uploaded_file:
 if 'uploaded_data' in st.session_state:
     st.header("2. ターゲット変数の選択")
     st.caption("モデルの予測対象となるターゲット変数を選択してください。この変数がモデルの予測ターゲットとなります。")
-    target_variable = st.selectbox('ターゲット変数を選択してください。', st.session_state.uploaded_data.columns)
-    st.session_state.target_variable = target_variable
+    
+    target_variable_options = st.multiselect('ターゲット変数として使用する変数を選択してください。複数選択した場合はその平均値がターゲットとなります。', st.session_state.uploaded_data.columns)
+    if target_variable_options:
+        st.session_state.uploaded_data['target_variable'] = st.session_state.uploaded_data[target_variable_options].mean(axis=1)
+        target_variable = 'target_variable'
+        st.session_state.target_variable = target_variable
+    else:
+        st.warning("ターゲット変数を選択してください。")
+
 
 # 分析から除外する変数の選択
     st.header("3. 分析から除外する変数の選択")
@@ -78,7 +85,7 @@ if 'uploaded_data' in st.session_state:
     st.caption("データの前処理を行い、利用可能な複数のモデルを比較します。最も適したモデルを選択するための基準としてください。")
 
     # 外れ値の処理
-    remove_outliers_option = st.checkbox('外れ値を削除する', value=False) 
+    remove_outliers_option = st.checkbox('外れ値を削除する', value=True) 
 
     if st.button('前処理とモデルの比較の実行'):  # この条件を追加
         # データの検証
