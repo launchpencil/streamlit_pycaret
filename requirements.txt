@@ -1,0 +1,13 @@
+streamlit
+pandas
+numpy
+pycaret[full]
+scikit-learn
+graphviz
+matplotlib
+japanize-matplotlib
+openpyxl
+joblib
+lightgbm
+xgboost
+catboost
